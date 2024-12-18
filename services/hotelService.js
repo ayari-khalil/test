@@ -46,16 +46,16 @@ const Hotel = require('../Models/hotel');
         }else{
         res.status(200).json({ message: "Hotel deleted successfully", Hotel: result });
     }  }
+    async function recherche(req,res,next){
+        await Hotel.find({ nbrRooms: { $gte: 10, $lte: 100 } })
+        .then((data,err)=>{
+            if(err){
+            res.status(503).json(err)}
+            else{
+                res.status(200).json(data)
+            }
+        })
+    }
 
-   async function getHotelsByRoomRange(minRooms, maxRooms) {
-    return await Hotel.find({ nbrRooms: { $gte: 10, $lte: 100 } })
-    .then((err,data)=>{
-        if(err){
-            console.log("error creating hotel!:"+err);
-        }
-        console.log(data);
-    }) 
-  }
 
-
-module.exports = {list,create,updateHotel,deleteHotel,getHotelsByRoomRange};
+module.exports = {list,create,updateHotel,deleteHotel,recherche};
